@@ -154,6 +154,20 @@ public class TamanoMatriz extends javax.swing.JFrame {
             int empleados = Integer.parseInt(this.txtEmployeeType.getText());
             int sucursales = Integer.parseInt(this.txtBranchQty.getText());
             
+            // Si ingresa mas sucursales que la cantidad inicial, se piden nombres 
+            if (sucursales > App.sucursales.size()) {
+                for (int i = 0; i < (sucursales - App.sucursales.size() + 1); i++) {
+                    TamanoMatriz.agregarSucursal();
+                }
+            }
+            
+            // Si ingresa mas tipos de empleados que la cantidad inicial, se piden nombres 
+            if (empleados > App.categoriasEmpleados.size()) {
+                for (int i = 0; i < (empleados - App.categoriasEmpleados.size() + 1); i++) {
+                    TamanoMatriz.agregarEmpleado();
+                }
+            }
+            
             // Se crea la siguiente ventana
             LlenadoMatriz ventanaLlenado = new LlenadoMatriz(empleados, sucursales);
             // Se cambia de ventana
@@ -162,7 +176,30 @@ public class TamanoMatriz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnContinueActionPerformed
 
-
+    public static void agregarSucursal() {
+        
+        String name = "";
+        
+        while(name.equalsIgnoreCase("")) {
+            name = JOptionPane.showInputDialog("Nombre de la sucursal:");
+        }
+        
+        App.sucursales.add(name);
+        
+    }
+    
+    public static void agregarEmpleado() {
+        
+        String name = "";
+        
+        while(name.equalsIgnoreCase("")) {
+            name = JOptionPane.showInputDialog("Nombre del tipo de empleado:");
+        }
+        
+        App.categoriasEmpleados.add(name);
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnContinue;
     private javax.swing.JLabel jLabel1;

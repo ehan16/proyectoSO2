@@ -1,18 +1,21 @@
 package proyecto_so2_han_morales;
 
-public class Matriz {
+public class BankerAl {
     
     // ATRIBUTOS
     private int cantSucursales;       // Cantidad de sucursales a cubrir (procesos)
     private int cantEmpleados;        // Cantidad de tipos de empleados (recursos)
-    private int [] disponibles;       // Empleados actualmente disponibles
-    private int [][] asignados;       // Llenada mediante un random
-    private int [][] necesarios;      // Lo indica el usuario
-    private int [][] faltantes;       // Calculada (C-A)
+    private int[] disponibles;        // Empleados actualmente disponibles
+    private int[][] asignados;        // Llenada mediante un random
+    private int[][] necesarios;       // Lo indica el usuario
+    private int[][] faltantes;        // Calculada (C-A)
+    private int[] secuencia;          // La secuencia en la que se tiene que llenar las sucursales
     
     // CONSTRUCTOR
 
-    public Matriz(int[] disponibles, int[][] necesarios) {
+    public BankerAl(int sucursales, int empleados, int[] disponibles, int[][] necesarios) {
+        this.cantEmpleados = empleados;
+        this.cantSucursales = sucursales;
         this.disponibles = disponibles;
         this.necesarios = necesarios;
     }
@@ -65,6 +68,14 @@ public class Matriz {
 
     public void setFaltantes(int[][] faltantes) {
         this.faltantes = faltantes;
+    }
+
+    public int[] getSecuencia() {
+        return secuencia;
+    }
+
+    public void setSecuencia(int[] secuencia) {
+        this.secuencia = secuencia;
     }
     
 }
