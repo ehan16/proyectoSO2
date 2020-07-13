@@ -1,60 +1,61 @@
 package proyecto_so2_han_morales;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
 
 public class LlenadoMatriz extends javax.swing.JFrame {
 
     // ATRIBUTOS
-    
     int empleados, sucursales;
     DefaultTableModel resourcesModel;
     DefaultTableModel needsModel;
     int[] disponibles;
     int[][] necesarios;
-    
+
     // CONSTRUCTOR
-    
     public LlenadoMatriz(int empleados, int sucursales) {
-        
+
         initComponents();
-        
+
         // Se ubica la ventana
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        
+
         // Se consiguen los modelos de cada tabla
         this.resourcesModel = (DefaultTableModel) this.jTableResources.getModel();
         this.needsModel = (DefaultTableModel) this.jTableNeeds.getModel();
-        
+
         // Inicializan los valores y matrices
         this.empleados = empleados;
         this.sucursales = sucursales;
         this.disponibles = new int[this.empleados];
-        this.necesarios = new int[this.empleados][this.sucursales];
+        this.necesarios = new int[this.sucursales][this.empleados];
+        
+        System.out.println("Columnas " + this.necesarios[0].length);
+        System.out.println("Filas " + this.necesarios.length);
+        
         Object[] recursos = new Object[this.empleados];
         Object[] necesidades = new Object[this.empleados + 1];
-        
+
         // A la tabla de recursos solo se le agrega una fila
         this.resourcesModel.addRow(recursos);
-        
+
         // Se agrega un row header a la tabla de necesidades
         this.needsModel.addColumn("Sucursal");
-        
+
         // Se asignan tantas filas como sucursales exista en la tabla respectiva
         for (int i = 0; i < this.sucursales; i++) {
             this.needsModel.addRow(necesidades);
             this.needsModel.setValueAt(App.sucursales.get(i), i, 0);
         }
-        
+
         // Se procede con las columnas, tantas como tipos de empleados exista
         for (int i = 0; i < this.empleados; i++) {
             this.resourcesModel.addColumn(App.categoriasEmpleados.get(i));
             this.needsModel.addColumn(App.categoriasEmpleados.get(i));
         }
-        
-    }
 
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -69,8 +70,6 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         jTableNeeds = new javax.swing.JTable();
         jScrollEmployees = new javax.swing.JScrollPane();
         jTableResources = new javax.swing.JTable();
-        btnAddType = new javax.swing.JButton();
-        btnAddBranch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,24 +115,6 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         ));
         jScrollEmployees.setViewportView(jTableResources);
 
-        btnAddType.setBackground(new java.awt.Color(51, 0, 0));
-        btnAddType.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddType.setText("Agregar empleado");
-        btnAddType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddTypeActionPerformed(evt);
-            }
-        });
-
-        btnAddBranch.setBackground(new java.awt.Color(51, 0, 0));
-        btnAddBranch.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddBranch.setText("Agregar sucursal");
-        btnAddBranch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddBranchActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -143,13 +124,9 @@ public class LlenadoMatriz extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addContainerGap(298, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(233, 233, 233)
-                .addComponent(btnAddBranch)
-                .addGap(18, 18, 18)
-                .addComponent(btnAddType)
-                .addGap(18, 18, 18)
+                .addGap(399, 399, 399)
                 .addComponent(btnContinue)
-                .addContainerGap(250, Short.MAX_VALUE))
+                .addContainerGap(400, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(130, 130, 130)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -173,10 +150,7 @@ public class LlenadoMatriz extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollBranches, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnContinue)
-                    .addComponent(btnAddType)
-                    .addComponent(btnAddBranch))
+                .addComponent(btnContinue)
                 .addGap(36, 36, 36))
         );
 
@@ -197,21 +171,83 @@ public class LlenadoMatriz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinueActionPerformed
-        // TODO add your handling code here:
+
+        boolean correcto = true; // Para conocer si se ha realizado el proceso de manera correcta
+
+        // Se llena el vector de los recursos disponibles
+        for (int i = 0; i < this.empleados; i++) {
+
+            // Se consigue el valor de cada columna
+            String valor = String.valueOf(this.resourcesModel.getValueAt(0, i));
+            int cant;
+
+            try {
+
+                cant = Integer.parseInt(valor);
+
+                // Se evalua si es un numero positivo y se asigna de ser correcto
+                if (cant <= 0) {
+                    JOptionPane.showMessageDialog(null, "ERROR: Cantidad tiene que ser mayor a cero en columna " + (i + 1), "ERROR", JOptionPane.ERROR_MESSAGE);
+                    correcto = false;
+                } else {
+                    this.disponibles[i] = cant;
+                }
+
+            } catch (NumberFormatException e) {
+
+                JOptionPane.showMessageDialog(null, "ERROR: Dato invalido en columna " + (i + 1), "ERROR", JOptionPane.ERROR_MESSAGE);
+                correcto = false;
+
+            }
+
+        }
+
+        // Se llena la matriz de recursos necesarios solamente si la primera matriz se lleno correctamente
+        if (correcto) {
+
+            for (int i = 0; i < this.sucursales; i++) {
+
+                for (int j = 0; j < this.empleados; j++) {
+
+                    // Se tiene que recordar que la primera columna es el nombre de la sucursal
+                    String aux = String.valueOf(this.needsModel.getValueAt(i, j + 1));
+                    int req;
+
+                    try {
+
+                        req = Integer.parseInt(aux);
+
+                        // Se evalua si es un numero positivo y se asigna de ser correcto
+                        if (req <= 0) {
+                            JOptionPane.showMessageDialog(null, "ERROR: Cantidad tiene que ser mayor a cero en fila " + (i + 1) + " columna " + (j + 2), "ERROR", JOptionPane.ERROR_MESSAGE);
+                            correcto = false;
+                        } else {
+                            this.necesarios[i][j] = req;
+                        }
+
+                    } catch (NumberFormatException e) {
+
+                        JOptionPane.showMessageDialog(null, "ERROR: Dato invalido en fila " + (i + 1) + " columna " + (j + 2), "ERROR", JOptionPane.ERROR_MESSAGE);
+                        correcto = false;
+
+                    }
+                    
+                }
+
+            }
+
+        }
         
+        // Si todo el llenado fue correcto, se procede
+        // Sino, no pasa nada y el usuario tiene que corregir los datos
+        if (correcto) {
+//            Grafica grafica = new Grafica();
+            BankerAl banker = new BankerAl(this.sucursales, this.empleados, this.disponibles, this.necesarios);
+        } 
+
     }//GEN-LAST:event_btnContinueActionPerformed
 
-    private void btnAddTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddTypeActionPerformed
-
-    private void btnAddBranchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddBranchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddBranchActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddBranch;
-    private javax.swing.JButton btnAddType;
     private javax.swing.JButton btnContinue;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -19,6 +19,50 @@ public class BankerAl {
         this.disponibles = disponibles;
         this.necesarios = necesarios;
     }
+    
+    // METODOS
+    
+    public void calcular() {
+        
+        // Se inicializan las matrices de asignados
+        this.asignados = new int[this.cantSucursales][this.cantEmpleados];
+        
+        // Se llena la matriz de inicializacion con recursos de manera aleatoria
+        for (int i = 0; i < this.cantSucursales; i++) {
+            
+            for (int j = 0; j < this.cantEmpleados; j++) {
+                
+                // El limite superior son los requerimientos de cada sucursal con respecto al tipo de empleado
+                int aux = (int) (Math.random() * this.necesarios[i][j]);
+                
+                if (aux <= this.disponibles[j]) {
+                    // Si es menor a la disponibilidad, se coloca y se actualiza la disponibilidad
+                    this.asignados[i][j] = aux;
+                    this.disponibles[j] = this.disponibles[j] - aux;
+                } else {
+                    // De lo contrario se asigna 0
+                    this.asignados[i][j] = 0;
+                }
+                
+            }
+            
+        }
+        
+        // Se inicializa la matriz de faltantes
+        this.faltantes = new int[this.cantSucursales][this.cantEmpleados];
+        
+        for (int i = 0; i < this.cantSucursales; i++) {
+            
+            for (int j = 0; j < this.cantEmpleados; j++) {
+            
+                // Se realiza la resta (C-A) para conocer cuantos recursos aun necesita cada proceso
+                this.faltantes[i][j] = this.necesarios[i][j] - this.asignados[i][j];
+                
+            }
+            
+        }
+        
+    }
 
     // GETTERS Y SETTERS 
     
