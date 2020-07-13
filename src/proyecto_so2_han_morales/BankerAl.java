@@ -38,7 +38,8 @@ public class BankerAl {
                 if (aux <= this.disponibles[j]) {
                     // Si es menor a la disponibilidad, se coloca y se actualiza la disponibilidad
                     this.asignados[i][j] = aux;
-                    this.disponibles[j] = this.disponibles[j] - aux;
+                    this.disponibles[j] = this.disponibles[j] - aux;    
+                    System.out.println("Se agarraron " + aux + " quedan disponibles " + this.disponibles[j] + " columna " + (j + 1));
                 } else {
                     // De lo contrario se asigna 0
                     this.asignados[i][j] = 0;
@@ -46,6 +47,13 @@ public class BankerAl {
                 
             }
             
+        }
+        
+        for(int i = 0; i < this.asignados.length; i++) {
+            for (int j = 0; j < this.asignados[0].length; j++) {
+                System.out.print(this.asignados[i][j] + " ");
+            } 
+            System.out.println("");
         }
         
         // Se inicializa la matriz de faltantes
