@@ -153,6 +153,13 @@ public class TamanoMatriz extends javax.swing.JFrame {
             int empleados = Integer.parseInt(this.txtEmployeeType.getText());
             int sucursales = Integer.parseInt(this.txtBranchQty.getText());
             
+            // Validacion de no introducir valores igual a cero
+            if (empleados == 0 || sucursales == 0) {
+                empleados = 6;
+                sucursales = 6;
+                JOptionPane.showMessageDialog(null, "AVISO: Como uno de los campos era cero, se utilizaron los valores por defecto", "ERROR", JOptionPane.WARNING_MESSAGE);
+            }
+            
             // Si ingresa mas sucursales que la cantidad inicial, se piden nombres 
             if (sucursales > App.sucursales.size()) {
                 for (int i = 0; i < (sucursales - App.sucursales.size() + 1); i++) {

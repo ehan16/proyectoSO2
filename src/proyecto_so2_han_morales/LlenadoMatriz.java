@@ -6,11 +6,11 @@ import javax.swing.table.DefaultTableModel;
 public class LlenadoMatriz extends javax.swing.JFrame {
 
     // ATRIBUTOS
-    int empleados, sucursales;             // Limite
-    DefaultTableModel recursosModel;      // Manejo de las tablas
+    int empleados, sucursales;                      // Limite
+    DefaultTableModel recursosModel;                // Manejo de las tablas
     DefaultTableModel requerimientosModel;          // Manejo de las tablas
-    int[] disponibles;
-    int[][] necesarios;
+    int[] disponibles;                              // Matrices sobre los recursos
+    int[][] necesarios;                             // Matrices sobre los recursos
 
     // CONSTRUCTOR
     public LlenadoMatriz(int empleados, int sucursales) {
@@ -119,28 +119,27 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(319, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap(323, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(399, 399, 399)
                 .addComponent(btnContinue)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(396, 396, 396))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollEmployees, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
-                    .addComponent(jScrollBranches))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollBranches, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(206, 206, 206)
+                        .addComponent(jLabel1)))
+                .addGap(107, 107, 107))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -242,7 +241,6 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         // Si todo el llenado fue correcto, se procede
         // Sino, no pasa nada y el usuario tiene que corregir los datos
         if (correcto) {
-//            Grafica grafica = new Grafica();
             BankerAlgorithm banker = new BankerAlgorithm(this.sucursales, this.empleados, this.disponibles, this.necesarios);
         } 
 
