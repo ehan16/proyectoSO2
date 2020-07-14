@@ -71,8 +71,29 @@ public class BankerAlgorithm {
             
         }
         
+        
+        
     }
-
+    
+    // Metodo para calcular el estado seguro
+    public void esSeguro() {
+        
+    }
+    
+    // Metodo para indicar si se pueden asignar los recursos a un proceso
+    public boolean chequear(int i) {
+        
+        for (int j = 0; j < this.cantEmpleados; j++) {
+            // Si no se puede cumplir uno de los requerimientos del proceso, se retorna falso
+            if(this.disponibles[j] < this.faltantes[i][j]){
+                return false;
+            }
+        }
+        
+        // De lo contrario, se retorna verdadero
+        return true;
+    }
+    
     // GETTERS Y SETTERS 
     
     public int getCantSucursales() {

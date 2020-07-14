@@ -1,11 +1,25 @@
 
 package proyecto_so2_han_morales;
 
+import javax.swing.table.DefaultTableModel;
+
 
 public class FaltantesAsignados extends javax.swing.JFrame {
 
+    // ATRIBUTOS
+    int empleados, sucursales;                      // Limite
+    DefaultTableModel recursosModel;                // Manejo de las tablas
+    DefaultTableModel asignadosModel;               // Manejo de las tablas
+    DefaultTableModel faltantesModel;               // Manejo de las tablas
+    int[] disponibles;                              // Matrices sobre los recursos
+    int[][] necesarios;                             // Matrices sobre los recursos
+    int[][] asignados;                              // Matrices sobre los recursos
+    int[][] faltantes;                              // Matrices sobre los recursos
+    
     public FaltantesAsignados() {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
     }
 
 
