@@ -1,6 +1,6 @@
 package proyecto_so2_han_morales;
 
-public class BankerAl {
+public class BankerAlgorithm {
     
     // ATRIBUTOS
     private int cantSucursales;       // Cantidad de sucursales a cubrir (procesos)
@@ -13,11 +13,12 @@ public class BankerAl {
     
     // CONSTRUCTOR
 
-    public BankerAl(int sucursales, int empleados, int[] disponibles, int[][] necesarios) {
+    public BankerAlgorithm(int sucursales, int empleados, int[] disponibles, int[][] necesarios) {
         this.cantEmpleados = empleados;
         this.cantSucursales = sucursales;
         this.disponibles = disponibles;
         this.necesarios = necesarios;
+        this.secuencia = new int[sucursales];   // La cantidad de sucursales a evaluar 
     }
     
     // METODOS

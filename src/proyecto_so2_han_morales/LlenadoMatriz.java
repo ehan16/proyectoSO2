@@ -6,9 +6,9 @@ import javax.swing.table.DefaultTableModel;
 public class LlenadoMatriz extends javax.swing.JFrame {
 
     // ATRIBUTOS
-    int empleados, sucursales;
-    DefaultTableModel resourcesModel;
-    DefaultTableModel needsModel;
+    int empleados, sucursales;             // Limite
+    DefaultTableModel recursosModel;      // Manejo de las tablas
+    DefaultTableModel requerimientosModel;          // Manejo de las tablas
     int[] disponibles;
     int[][] necesarios;
 
@@ -22,8 +22,8 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         this.setResizable(false);
 
         // Se consiguen los modelos de cada tabla
-        this.resourcesModel = (DefaultTableModel) this.jTableResources.getModel();
-        this.needsModel = (DefaultTableModel) this.jTableNeeds.getModel();
+        this.recursosModel = (DefaultTableModel) this.jTableResources.getModel();
+        this.requerimientosModel = (DefaultTableModel) this.jTableNeeds.getModel();
 
         // Inicializan los valores y matrices
         this.empleados = empleados;
@@ -38,21 +38,21 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         Object[] necesidades = new Object[this.empleados + 1];
 
         // A la tabla de recursos solo se le agrega una fila
-        this.resourcesModel.addRow(recursos);
+        this.recursosModel.addRow(recursos);
 
         // Se agrega un row header a la tabla de necesidades
-        this.needsModel.addColumn("Sucursal");
+        this.requerimientosModel.addColumn("Sucursal");
 
         // Se asignan tantas filas como sucursales exista en la tabla respectiva
         for (int i = 0; i < this.sucursales; i++) {
-            this.needsModel.addRow(necesidades);
-            this.needsModel.setValueAt(App.sucursales.get(i), i, 0);
+            this.requerimientosModel.addRow(necesidades);
+            this.requerimientosModel.setValueAt(App.sucursales.get(i), i, 0);
         }
 
         // Se procede con las columnas, tantas como tipos de empleados exista
         for (int i = 0; i < this.empleados; i++) {
-            this.resourcesModel.addColumn(App.categoriasEmpleados.get(i));
-            this.needsModel.addColumn(App.categoriasEmpleados.get(i));
+            this.recursosModel.addColumn(App.categoriasEmpleados.get(i));
+            this.requerimientosModel.addColumn(App.categoriasEmpleados.get(i));
         }
 
     }
@@ -177,9 +177,10 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         for (int i = 0; i < this.empleados; i++) {
 
             // Se consigue el valor de cada columna
-            String valor = String.valueOf(this.resourcesModel.getValueAt(0, i));
+            String valor = String.valueOf(this.recursosModel.getValueAt(0, i));
             int cant;
 
+            // Se intenta realizar la conversion
             try {
 
                 cant = Integer.parseInt(valor);
@@ -209,9 +210,10 @@ public class LlenadoMatriz extends javax.swing.JFrame {
                 for (int j = 0; j < this.empleados; j++) {
 
                     // Se tiene que recordar que la primera columna es el nombre de la sucursal
-                    String aux = String.valueOf(this.needsModel.getValueAt(i, j + 1));
+                    String aux = String.valueOf(this.requerimientosModel.getValueAt(i, j + 1));
                     int req;
 
+                    // Se intenta realizar la conversion
                     try {
 
                         req = Integer.parseInt(aux);
@@ -241,7 +243,7 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         // Sino, no pasa nada y el usuario tiene que corregir los datos
         if (correcto) {
 //            Grafica grafica = new Grafica();
-            BankerAl banker = new BankerAl(this.sucursales, this.empleados, this.disponibles, this.necesarios);
+            BankerAlgorithm banker = new BankerAlgorithm(this.sucursales, this.empleados, this.disponibles, this.necesarios);
         } 
 
     }//GEN-LAST:event_btnContinueActionPerformed
