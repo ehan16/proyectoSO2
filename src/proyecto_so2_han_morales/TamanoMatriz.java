@@ -160,17 +160,22 @@ public class TamanoMatriz extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "AVISO: Como uno de los campos era cero, se utilizaron los valores por defecto", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
             
+            int auxSucursal = sucursales - App.sucursales.size();
+            int auxEmpleado = empleados - App.categoriasEmpleados.size();
+            
             // Si ingresa mas sucursales que la cantidad inicial, se piden nombres 
             if (sucursales > App.sucursales.size()) {
-                for (int i = 0; i < (sucursales - App.sucursales.size() + 1); i++) {
+                for (int i = 0; i < auxSucursal; i++) {
                     TamanoMatriz.agregarSucursal();
+                    System.out.println("Sucursal " + (i + 1));
                 }
             }
             
             // Si ingresa mas tipos de empleados que la cantidad inicial, se piden nombres 
             if (empleados > App.categoriasEmpleados.size()) {
-                for (int i = 0; i < (empleados - App.categoriasEmpleados.size() + 1); i++) {
+                for (int i = 0; i < auxEmpleado; i++) {
                     TamanoMatriz.agregarEmpleado();
+                    System.out.println("Empleado " + (i + 1));
                 }
             }
             
