@@ -7,19 +7,41 @@ import javax.swing.table.DefaultTableModel;
 public class FaltantesAsignados extends javax.swing.JFrame {
 
     // ATRIBUTOS
+    
     int empleados, sucursales;                      // Limite
-    DefaultTableModel recursosModel;                // Manejo de las tablas
+    BankerAlgorithm banker;                         // Banquero para llamar sus metodos
+    DefaultTableModel disponiblesModel;             // Manejo de las tablas
     DefaultTableModel asignadosModel;               // Manejo de las tablas
     DefaultTableModel faltantesModel;               // Manejo de las tablas
     int[] disponibles;                              // Matrices sobre los recursos
-    int[][] necesarios;                             // Matrices sobre los recursos
     int[][] asignados;                              // Matrices sobre los recursos
     int[][] faltantes;                              // Matrices sobre los recursos
     
-    public FaltantesAsignados() {
+    // CONSTRUCTOR
+    
+    public FaltantesAsignados(BankerAlgorithm banker) {
+        
+        // Inicializan los componentes
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        
+        this.banker = banker;
+        
+        // Se obtienen los tamanos
+        this.empleados = banker.getCantEmpleados();
+        this.sucursales = banker.getCantSucursales();
+        
+        // Se obtienen las matrices en su estado actual
+        this.disponibles = banker.getDisponibles();
+        this.asignados = banker.getAsignados();
+        this.faltantes = banker.getFaltantes();
+        
+        // Se obtienen los models para manejar las tablas
+        this.disponiblesModel = (DefaultTableModel) this.jTableAvailable.getModel();
+        this.asignadosModel = (DefaultTableModel) this.jTableAllocated.getModel();
+        this.faltantesModel = (DefaultTableModel) this.jTableRequired.getModel();
+                
     }
 
 
@@ -35,7 +57,7 @@ public class FaltantesAsignados extends javax.swing.JFrame {
         jScrollAllocated = new javax.swing.JScrollPane();
         jTableAllocated = new javax.swing.JTable();
         jScrollEmployees = new javax.swing.JScrollPane();
-        jTableResources = new javax.swing.JTable();
+        jTableAvailable = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jScrollRequired = new javax.swing.JScrollPane();
         jTableRequired = new javax.swing.JTable();
@@ -73,7 +95,7 @@ public class FaltantesAsignados extends javax.swing.JFrame {
         ));
         jScrollAllocated.setViewportView(jTableAllocated);
 
-        jTableResources.setModel(new javax.swing.table.DefaultTableModel(
+        jTableAvailable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -81,7 +103,7 @@ public class FaltantesAsignados extends javax.swing.JFrame {
 
             }
         ));
-        jScrollEmployees.setViewportView(jTableResources);
+        jScrollEmployees.setViewportView(jTableAvailable);
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
@@ -162,10 +184,70 @@ public class FaltantesAsignados extends javax.swing.JFrame {
 
     private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinueActionPerformed
 
+        // Se llama al algoritmo para que ejecute
+        this.banker.esSeguro();
+        this.setVisible(false);
         
     }//GEN-LAST:event_btnContinueActionPerformed
-
     
+    // Funcion para llenar los valores de las matrices y vectores
+    public void crearTablas() {
+        
+        // Utilizados para el tamano de la tabla
+        Object[] recursos = new Object[this.empleados];
+        Object[] necesidades = new Object[this.empleados + 1];
+        
+        // A la tabla de recursos solo se le agrega una fila
+        this.disponiblesModel.addRow(recursos);
+
+        // Se agrega un row header a la tabla de asignados y faltantes
+        this.asignadosModel.addColumn("Sucursal");
+        this.faltantesModel.addColumn("Sucursal");
+
+        // Se asignan tantas filas como sucursales exista en la tabla respectiva
+        // Con el nombre de la sucursal
+        for (int i = 0; i < this.sucursales; i++) {
+            
+            // Con la tabla de asignados
+            this.asignadosModel.addRow(necesidades);
+            this.asignadosModel.setValueAt(App.sucursales.get(i), i, 0);
+            
+            // Con la tabla de faltantes
+            this.faltantesModel.addRow(necesidades);
+            this.faltantesModel.setValueAt(App.sucursales.get(i), i, 0);
+            
+        }
+
+        //Se procede con las columnas, tantas como tipos de empleados exista
+        for (int i = 0; i < this.empleados; i++) {
+            this.disponiblesModel.addColumn(App.categoriasEmpleados.get(i));
+            this.asignadosModel.addColumn(App.categoriasEmpleados.get(i));
+            this.faltantesModel.addColumn(App.categoriasEmpleados.get(i));
+        }
+        
+        
+        // Se llena la tabla de disponibles
+        for (int i = 0; i < this.empleados; i++) {
+            int valorRecurso = this.disponibles[i];
+            this.disponiblesModel.setValueAt(valorRecurso, 0, i);
+        }
+        
+        // Se llena la tabla de asignados y faltantes
+        for (int i = 0; i < this.sucursales; i++) {
+            for (int j = 0; j < this.empleados; j++) {
+                
+                // Asignados
+                int valorAsignado = this.asignados[i][j];
+                this.asignadosModel.setValueAt(valorAsignado, i, j + 1);
+                
+                // Faltantes
+                int valorFaltante = this.faltantes[i][j];
+                this.faltantesModel.setValueAt(valorFaltante, i, j + 1);
+                
+            }
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnContinue;
@@ -178,7 +260,7 @@ public class FaltantesAsignados extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollEmployees;
     private javax.swing.JScrollPane jScrollRequired;
     private javax.swing.JTable jTableAllocated;
+    private javax.swing.JTable jTableAvailable;
     private javax.swing.JTable jTableRequired;
-    private javax.swing.JTable jTableResources;
     // End of variables declaration//GEN-END:variables
 }

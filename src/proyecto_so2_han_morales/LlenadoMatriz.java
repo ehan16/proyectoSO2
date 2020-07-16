@@ -242,6 +242,10 @@ public class LlenadoMatriz extends javax.swing.JFrame {
         // Sino, no pasa nada y el usuario tiene que corregir los datos
         if (correcto) {
             BankerAlgorithm banker = new BankerAlgorithm(this.sucursales, this.empleados, this.disponibles, this.necesarios);
+            // Se asignan recursos y se calculan los faltantes
+            banker.calcular();
+            // Se oculta la ventana actual ya que no es necesaria ya
+            this.setVisible(false);
         } 
 
     }//GEN-LAST:event_btnContinueActionPerformed

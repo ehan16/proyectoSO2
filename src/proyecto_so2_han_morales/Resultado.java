@@ -1,5 +1,6 @@
 package proyecto_so2_han_morales;
 
+import java.util.ArrayList;
 import javax.swing.JTextArea;
 
 
@@ -49,12 +50,12 @@ public class Resultado extends javax.swing.JFrame {
         jScrollPane1.setEnabled(false);
 
         txtResult.setBackground(new java.awt.Color(225, 225, 225));
-        txtResult.setColumns(20);
-        txtResult.setFont(new java.awt.Font("Verdana", 0, 16)); // NOI18N
-        txtResult.setForeground(new java.awt.Color(51, 51, 51));
-        txtResult.setRows(5);
+        txtResult.setColumns(10);
+        txtResult.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        txtResult.setForeground(new java.awt.Color(0, 0, 0));
+        txtResult.setRows(6);
+        txtResult.setTabSize(5);
         txtResult.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 0, 0)));
-        txtResult.setEnabled(false);
         jScrollPane1.setViewportView(txtResult);
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
@@ -121,14 +122,14 @@ public class Resultado extends javax.swing.JFrame {
     // METODOS
     
     // Metodo para imprimir en la ventana el orden de llenado de las sucursales
-    public void result(int[] secuencia) {
+    public void result(ArrayList<Integer> secuencia) {
         
         // Variable auxiliar de concatenacion
         String res = "";
         
-        for (int i = 0; i < secuencia.length; i++) {
+        for (int i = 0; i < secuencia.size(); i++) {
             // Se concatena el nombre de la sucursal con su numero de orden
-            res += "" + (i + 1) + " - " + App.sucursales.get(secuencia[i]) + " (#"+ secuencia[i] +").\n";
+            res += "" + (i + 1) + " - " + App.sucursales.get(secuencia.get(i)) + " (#"+ secuencia.get(i) +").\n";
         }
         
         this.txtResult.setText(res);
