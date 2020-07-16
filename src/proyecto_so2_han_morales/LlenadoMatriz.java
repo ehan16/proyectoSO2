@@ -9,8 +9,8 @@ public class LlenadoMatriz extends javax.swing.JFrame {
     int empleados, sucursales;                      // Limite
     DefaultTableModel recursosModel;                // Manejo de las tablas
     DefaultTableModel requerimientosModel;          // Manejo de las tablas
-    int[] disponibles;                              // Matrices sobre los recursos
-    int[][] necesarios;                             // Matrices sobre los recursos
+    int[] disponibles;                              // Vector sobre los recursos disponibles (empleados)
+    int[][] necesarios;                             // Matrices sobre los recursos requeridos
 
     // CONSTRUCTOR
     public LlenadoMatriz(int empleados, int sucursales) {

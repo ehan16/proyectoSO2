@@ -191,7 +191,7 @@ public class TamanoMatriz extends javax.swing.JFrame {
         
         // Valida que el campo no se encuentre vacio
         while(name.equalsIgnoreCase("")) {
-            name = JOptionPane.showInputDialog("Nombre de la sucursal:");
+            name = JOptionPane.showInputDialog("Nombre de la nueva sucursal:");
         }
         
         App.sucursales.add(name);
@@ -206,7 +206,7 @@ public class TamanoMatriz extends javax.swing.JFrame {
         
         // Valida que el campo no se encuentre vacio
         while(name.equalsIgnoreCase("")) {
-            name = JOptionPane.showInputDialog("Nombre del tipo de empleado:");
+            name = JOptionPane.showInputDialog("Nombre del nuevo tipo de empleado:");
         }
         
         App.categoriasEmpleados.add(name);
