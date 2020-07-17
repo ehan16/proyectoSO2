@@ -74,57 +74,75 @@ public class BankerAlgorithm {
     public void esSeguro() {
 
         ArrayList<Integer> ordenSucursales = new ArrayList<>();    // Contiene el orden que se tienen que llenar las sucursales
-        boolean verificado[] = new boolean[this.cantSucursales];   // Llevar control de las sucursales verificadas ya
+        boolean verificado[] = new boolean[this.cantSucursales];   // Llevar control de las sucursales verificadas ya (Eficiencia)
         boolean completado = false;                                // Indica si el algoritmo ya ha verificado todas las sucursales
-        int sucursalesAsignados = 0;                               // Contador de sucursales verificadas
-        int recorrido = 0;
-        int j = 0;
-        
-        while ((j < this.cantSucursales) && (recorrido < this.cantSucursales)) {
-            
+        int sucursalesAsignados = 0;                               // Contador de sucursales ya asignadas
+        int recorrido = 0;                                         // Permite detectar cuantas sucursales en un ciclo while o recorrido se han verificado sin hacer una sola distribucion de recursos
+        int j = 0;                                                 // Su tilidad se presenta en el peor de los escenarios el cual se produce cuando se distribuyen recursos solo en 1 sucursal
+                                                                   // por ciclo iterativo while, por lo que, se necesita seguir haciendo iteraciones para cubrir con todos los casos
+                                                                    
+        //Si recorrido == cantSucursales  
+        //Ya se sabe que existe un interbloqueo entre los recursos. En consecuencia, no hace falta seguir haciendo iteraciones
+        while ((j < this.cantSucursales) && (recorrido < this.cantSucursales)) { 
+                                                                                
             for (int i = 0; i < this.cantSucursales; i++) {
                 
-                if (i == 0) {
-                    recorrido = 0;
+                //Siempre que empieza un nuevo ciclo para verificar todas las sucursales
+                if (i == 0) { 
+                    recorrido = 0; // la variable recorrido se vuelve 0, a fin de verificar si se hace una actualizacion posteriormente
                 }
                 
+                //Si la sucursal en cuestion no ha sido actualizado o se le han asignados recursos se hace la revision correspondiente
                 if (!verificado[i] && this.chequear(i)) {
+                    
+                    //Se itera sobre una determinada sucursal (fila) actualizando el valor de cada columna que la compone
                     for (int k = 0; k < this.cantEmpleados; k++) {
+                        
+                        /*
+                            Puesto que la cantidad de recursos que necesita la sucursal para cumplir con lo que necesita esta
+                            cubierto, el proceso de la sucursal termina y actualiza sus recursos disponibles, con los que ya tenia previamente
+                            y con los que la sucursal contaba (Puesto que termino su operacion)
+                        */
                         this.disponibles[k] = this.asignados[i][k] + this.disponibles[k];
-                        this.faltantes[i][k] = 0;
+                        this.faltantes[i][k] = 0;                                       //Se actualiza a 0 el valor de cada columna en la matriz faltantes
+                        
                     }
-                    System.out.println("El proceso " + (i + 1) + " termino");
-                    verificado[i] = true;
-                    sucursalesAsignados++;
-                    ordenSucursales.add(i);
-                    recorrido = 0;
+                    
+                    verificado[i] = true;   //Se actualiza el valor de verdad a true, para simbolizar que esa sucursal ya fue verificada y termino su proceso
+                    sucursalesAsignados++;  //Se actualiza la variable para reflejar cuantas sucursales se han actualizado o han terminado su proceso
+                    ordenSucursales.add(i); //Se agrega una nueva sucursal al registro u orden seleccionado para que no exista interbloqueo
+                    recorrido = 0;          // Se reestablece el valor de verdad de recorrido, ya que se agrego al menos un elemento recientemente
+                    
+                }else{
+                
+                    recorrido++;
+                
                 }
                 
+                //Si ya se asignaron todas las sucursales existentes, se sale del bucle
                 if (sucursalesAsignados == this.cantSucursales) {
-                    completado = true;
+                    completado = true;     // Ya fue completado el algoritmo del banquero y no existe interbloqueo
                     break;
                 }
                 
-                recorrido++;
-                
             }
             
-            j++;
+            j++;    //Aumenta el valor de j en 1 como representacion a todas las vueltas que se le ha dado al total de sucursales
             
+            //Si ya todas las sucursales estan asignadas, se libera del ultimo ciclo para no hacer mas iteraciones
             if (sucursalesAsignados == this.cantSucursales) {
-                completado = true;
+                completado = true;   // ya fue completado el algoritmo del banquero y no existe interbloqueo
                 break;
             }
             
         }
 
-        Resultado resultadoView = new Resultado();
+        // Se instancia la clase Resultado, que es la ventana donde se muestra el resultado despues de aplicar el algoritmo del banquero
+        Resultado resultadoView = new Resultado();                                               
         
         if (completado) {
-//            JOptionPane.showMessageDialog(null, "Se alcanzo el estado seguro");
             resultadoView.result(ordenSucursales);
         } else {
-//            JOptionPane.showMessageDialog(null, "Se presento un interbloqueo con los valores ingresados");
             resultadoView.deadlock();
         }
         
