@@ -138,7 +138,7 @@ public class Resultado extends javax.swing.JFrame {
     
     // Metodo para mostrar un resultado negativo
     public void deadlock() {
-        this.txtResult.setText("No es posible llegar a un estado seguro. Existe interbloqueo");
+        this.txtResult.setText("No es posible llegar a un estado seguro. \nExiste interbloqueo");
     }
     
     // GETTER Y SETTER
